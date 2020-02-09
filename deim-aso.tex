@@ -1,0 +1,79 @@
+\documentclass{deimj}
+\usepackage[dvipdfm]{graphicx}
+%\usepackage{latexsym}
+%\usepackage{txfonts}
+%\usepackage[fleqn]{amsmath}
+%\usepackage[psamsfonts]{amssymb}
+%\usepackage[deluxe]{otf}
+
+% 印刷位置調整 %
+% 必要に応じて値を変更してください．
+\hoffset -10mm % <-- 左に 10mm 移動
+\voffset -10mm % <-- 上に 10mm 移動
+
+\newcommand{\AmSLaTeX}{%
+ $\mathcal A$\lower.4ex\hbox{$\!\mathcal M\!$}$\mathcal S$-\LaTeX}
+\newcommand{\PS}{{\scshape Post\-Script}}
+\def\BibTeX{{\rmfamily B\kern-.05em{\scshape i\kern-.025em b}\kern-.08em
+ T\kern-.1667em\lower.7ex\hbox{E}\kern-.125em X}}
+
+\papernumber{DEIM Forum 2020 XX-Y}
+
+\jtitle{知識ベースに対するプロパティ指向のファセット検索システムに関する研究}
+%\jsubtitle{サブタイトル} <- サブタイトルを付けたいときはこの行の先頭の % を取る
+\authorlist{%
+ \authorentry[aso@kde.cs.tsukuba.ac.jp]{阿曽 太郎}{Taro Aso}{筑波大学}%
+ \authorentry[amagasa@cs.tsukuba.ac.jp]{天笠 俊之}{Toshiyuki Amagasa}{CCS}%
+ \authorentry[kitagawa@cs.tsukuba.ac.jp]{北川 博之}{Hiroyuki Kitagawa}{CCS}%
+}
+\affiliate[筑波大学]{筑波大学システム情報工学研究科\hskip1zw
+  〒305--8573 茨城県つくば市天王台1-1-1}
+ {Graduate School of Systems and Information Engineering, Tsukuba University\\
+  1--1--1 Tennodai, Tsukiba-shi, Ibaraki 305--8573, Japan}
+\affiliate[CCS]{筑波大学計算科学研究センター\hskip1zw
+  〒305--8573 茨城県つくば市天王台1-1-1}
+ {Center for Computational Science,\\
+  1--1--1 Tennodai, Tsukiba-shi, Ibaraki 305--8573, Japan}
+
+%\MailAddress{$\dagger$hanako@deim.ac.jp,
+% $\dagger\dagger$\{taro,jiro\}@jforum.co.jp}
+
+\begin{document}
+\pagestyle{empty}
+\begin{jabstract}
+知識ベースとは様々な知識が蓄積されたデータベースである．本研究では，その中でもRDFで記述された知識ベースに焦点を当てる．一般に，RDFによる知識ベースのデータ構造は複雑であるため，専門知識を持たないユーザが簡単に検索を行うには，ファセット検索が有効であることが知られている．ファセットとはデータの切り口であり，ユーザはファセットの選択・解除を繰り返すことで対話的な検索を実行できる．本論文では，RDFの述語（プロパティ）について，主語と述語との構造的な関係に着目してクラスタリング することで，プロパティに関するファセットを生成することを提案する．
+\end{jabstract}
+\begin{jkeyword}
+知識ベース，RDF，ファセット検索，クラスタリング
+\end{jkeyword}
+\maketitle
+
+\vspace{-5cm}
+\input{tex/introduction.tex}
+
+\vspace{-3mm}
+\input{tex/preliminaries.tex}
+
+\vspace{-3mm}
+\input{tex/related.tex}
+
+\vspace{-3mm}
+\input{tex/proposal.tex}
+
+\vspace{-3mm}
+\input{tex/experiments.tex}
+
+\vspace{-3mm}
+\input{tex/conclusion.tex}
+
+\vspace{-3mm}
+\input{tex/acknowledgements.tex}
+
+\vspace{5mm}
+\bibliographystyle{jplain}
+%%\bibliographystyle{ACM-Reference-Format}
+{\footnotesize % フォントサイズ
+\bibliography{reference}
+}
+
+\end{document}

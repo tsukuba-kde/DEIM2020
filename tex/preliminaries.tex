@@ -1,0 +1,49 @@
+\section{前提知識}
+本節では，前提知識として，ファセット検索について説明する．
+%本節では，RDF(Resource Description Framework)，ファセット検索，Latent Dirichlet Allocation(LDA)について述べる．
+%
+%\subsection{RDF}
+%RDFとは，LODのデータを記述するためのフレームワークである．RDFでは，Universal Resource Identifier(URI)で識別されるものすべてをリソースとして扱う．あるリソースについての1つの情報は，主語（Subject），述語（Predicate），目的語（Object）から構成される3つ組（トリプル）のグラフ構造で記述される．主語は情報を記述される対象のリソースを示し，述語は主語に関する情報のプロパティを定義する．そして，目的語には述語の対象となる値を格納する．主語と述語はURIで記述し，目的語はURIもしくはリテラルで記述する．LODのデータセットとは，トリプルの集合から成る．RDFの例を図~\ref{fig:RDFimage}に示す．なお，図において，楕円がURI，矩形がリテラルである．
+%
+%\begin{figure}[h]
+%\centering
+%\includegraphics[width=3.5in]{image/RDFimage.png}
+%\caption{RDFの例}
+%\label{fig:RDFimage}
+%\end{figure}
+\subsection{ファセット検索}
+ファセット検索とは，探索的検索における手法の1つである．その特徴は，検索対象のエンティティ集合を，様々な切り口（ファセット）によって絞り込むことで，意図するエンティティを発見しようとするところにある．例えば，E-CommerceのAmazonの商品検索サイトもファセット検索である．基本的なインターフェースとして図~\ref{fig:InterfaceImage2}を例にあげる．ユーザはキーワード検索によって，Extensionに初期の検索結果を，Transition Markerに初期のファセットを得る．その状態から，ファセットの選択や，選択したファセットの解除を対話的に繰り返して，検索結果を洗練させていく．
+%
+\begin{figure}[h]
+\centering
+\includegraphics[width=3in]{image/InterfaceImage2.png}
+\caption{\small
+ファセット検索のインターフェースイメージ
+}
+\label{fig:InterfaceImage2}
+\end{figure}
+%
+%\subsection{LDA}
+%Latent Dirichlet Allocation(LDA)とは，1つの文書が複数のトピックを持つと仮定するトピックモデルの1つである．トピックモデルとは，Bag-of-Words(BOW)で表現された文書集合を生成するための確率モデルである．BOWとは，文書を単語の多重集合で表現する方法である．LDAは，文書が持つトピックがわかるという特徴から，トピックが似ている文書を見つけることや，トピックに基づいた文書分類に活用されている．
+
+%LDAによる文書集合の生成プロセスについて述べる．BOWで表現される文書dはN単語のベクトル$\mathbf{w}_d = (w_{d1}, ..., w_{dN})$ で表現する．BOWで表現されたD個の文書集合を $\mathbf{W} = \{ \mathbf{w}_1, ..., \mathbf{w}_D \}$とする．それらの語彙の集合を $V=\{ v_1, v_2, ..., v_{|V|} \}$とする．K個のトピックの各トピックkは単語分布$\phi_k = (\phi_{k1}, ..., \phi_{k|V|})$ を持つ．このとき，$\phi_{kv} = p(v|\phi_k)$ はトピックkで語彙vが生成される確率 ($\phi_{kv} \ge 0, \textstyle\sum_{v=1}^{|V|} \phi_{kv} = 1$) を表す．文書ごとにトピック分布 $\theta_d = (\theta_{d1}, ..., \theta_{dK})$ を仮定するので，それに従い，文書dの各単語にトピック$z_{dn}$ が割り当てられる．なお，$\theta_{dk} = p(k|\theta_d)$ は文書dの単語にトピックkが割り当てられる確率である ($\theta_{dk} \ge 0, \textstyle\sum_{k=1}^K \theta_{dk} = 1$)．そして，割り当てられたトピックの単語分布 $\phi_{z_{dn}}$ に従って単語が生成される．この文書集合の生成過程をまとめると下記の通りである．
+%\begin{enumerate}
+%\item For トピック k = 1, ..., K
+%	\begin{enumerate}
+%	\item 単語分布を生成 $\phi_k$ 〜 Dirichlet($\beta$)
+%	\end{enumerate}
+%\item For 文書 d = 1, ..., D
+%	\begin{enumerate}
+%	\item トピック分布を生成 $\theta_d$ 〜 Dirichlet($\alpha$)
+%	\item For 単語 n = 1, ..., N
+%		\begin{enumerate}
+%		\item トピックを生成 $z_{dn}$ 〜 Multi($\theta_d$)
+%		\item 単語を生成 $w_{dn}$ 〜 Multi($\phi_{z_{dn}}$)
+%		\end{enumerate}
+%	\end{enumerate}
+%\end{enumerate}
+
+%ここで，トピックごとの単語分布 $\phi_k$ および文書ごとのトピック分布 $\theta_d$ は多項分布のパラメータであり，その共役事前分布であるディリクレ分布から生成されると仮定している．また，ディリクレ分布の$\alpha$，$\beta$はハイパーパラメータである．
+
+%式にすると以下の通りである．\[ p(w_i|d) = \sum_{k=1}^K p(w_i|z_k)p(z_k|d) \]
+%1つのトピック $z_j$, $1\le j \le K$ は $|V|$ についての多項分布で表現され，$p(w_i|z_j),\textstyle\sum_{i=1}^{|V|} p(w_i|z_j) = 1$ である．LDAは単語集合を2段階で生成する：文書集合からトピックを生成し，トピックから単語集合を生成する．より正確には，文書の単語分布

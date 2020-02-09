@@ -1,0 +1,114 @@
+\section{予備実験}
+\label{sec:experiments}
+プロパティ指向のファセット検索システムの機能要素となるプロパティファセットの生成とその結果について目視による初期的な確認を行うことを目的として，次の２種類のプロパティのクラスタリング 結果についての確認を行なった．
+\begin{enumerate}
+	\item 上位プロパティによるクラスタリング
+	\item 階層型クラスタリング によるクラスタリング
+\end{enumerate}
+また，想定するユーザ操作に従って，階層型クラスタリング によって生成したプロパティファセットによる検索結果の確認を行った．
+%
+\subsection{クラスタリング }
+\subsubsection{上位プロパティによるクラスタリング }
+知識ベースの語彙の体系に基づいて，プロパティをクラスタリング する．プロパティは，RDFスキーマと呼ばれる語彙を定義する基本的な仕組みによって，そのプロパティの性質が定義されている．その中で，上位プロパティを定義するために使用されるrdfs:subPropertyOfを利用して，各プロパティを上位プロパティでクラスタリング した．
+\subsubsection{階層型クラスタリング によるクラスタリング }
+実際のデータの関係性に基づいて，プロパティをクラスタリング する．トリプル集合から，プロパティ間の主語に関するJaccard係数と目的語に関するJaccard係数の平均値を計算し，群平均法による階層型クラスタリング によって，主語と目的語との関係が類似するプロパティをクラスタとしてまとめた．
+%
+\subsection{実験環境}
+\label{sec:environment}
+提案手法をPython 3.7.3で実装し，Intel(R) Core\texttrademark i7-7700 3.60 GHz CPU, 32 GB RAMを搭載したUbuntu 18.04.3 LTSで実験を行った．
+%
+\subsection{データセット}
+\label{sec:datasets}
+本実験では，DBpedia 2016-10\footnote{https://wiki.dbpedia.org/downloads-2016-10}\ のPage Linksのデータセットの約0.4\%を取得し，検索対象のエンティティとした．エンティティの数は449,339個である．そして，同じDBpedia 2016-10のMappingbased Objectsのデータセットから検索対象のエンティティが含まれるトリプルを抽出し，クラスタリング対象のデータセットとした．トリプルに含まれるプロパティの種類数は617個である．
+%
+\subsection{上位プロパティによるクラスタリング 結果}
+\label{sec:upperPropertyClusteringResult}
+上位プロパティを使うと，617個のプロパティのうち，615個のプロパティを41個のクラスタにまとめることができた．2個のプロパティは，上位プロパティが定義されていないため，クラスタから漏れてしまった．図~\ref{fig:upperPropertyClusters}は41個のクラスタから，プロパティ数が10個以上となったクラスタの一覧である．約4割のプロパティが，2つの上位プロパティにまとめられていることがわかる．それらのクラスタには，多様な領域に関するプロパティがメンバーとして含まれていることを確認した．
+
+また，図~\ref{fig:partOfUpperPropertyCluster}は，``hasPart'' クラスタに含まれるプロパティの一覧である．組織，都市，食物など，様々な領域に関するプロパティが含まれていることがわかる．
+%
+\begin{figure}[h]
+\centering
+\includegraphics[width=3in]{image/upperPropertyClusters.png}
+\caption{\small
+上位プロパティによるクラスタリング 結果の一部（プロパティ数が10以上のクラスタの一覧）
+}
+\label{fig:upperPropertyClusters}
+\end{figure}
+%
+\begin{figure}[h]
+\centering
+\includegraphics[scale=0.5]{image/partOfUpperPropertyCluster.png}
+\caption{\small
+``hasPart''クラスタのプロパティ一覧
+}
+\label{fig:partOfUpperPropertyCluster}
+\end{figure}
+%
+\subsection{階層型クラスタリング によるクラスタリング 結果}
+\label{sec:hierachicalClustersResult}
+階層型クラスタリング では，617個のプロパティを128個のクラスタを生成した．クラスタの生成はデンドログラムを確認し，分割の閾値を0.995として実行した．図~\ref{fig:hierachicalClusters}は，プロパティ数が10個以上となったクラスタの一覧で19個ある．クラスタの名称は，クラスタ内のプロパティの内容を確認して便宜的に付けた．クラスタのサイズは最大でも51となり，上位プロパティによるクラスタリング と比較して，クラスタのサイズの分散は小さくなっていることは明らかである．クラスタ内のプロパティが関係する領域も，クラスタの名称通り，一定の傾向があることを確認した．図~\ref{fig:partOfHierachicalCluster}を具体例として提示する．一定の領域に関係するプロパティの集合となっていることが確認できる．
+%
+\begin{figure}[h]
+\centering
+\includegraphics[width=3in]{image/hierachicalClusters.png}
+\caption{\small
+階層型クラスタリング によるクラスタリング 結果の一部（プロパティ数が10以上のクラスタの一覧）
+}
+\label{fig:hierachicalClusters}
+\end{figure}
+%
+\begin{figure}[h]
+\centering
+\includegraphics[scale=0.5]{image/partOfHierachicalCluster.png}
+\caption{\small
+``競走馬に関するプロパティ''クラスタのプロパティ一覧
+}
+\label{fig:partOfHierachicalCluster}
+\end{figure}
+%
+\subsection{プロパティファセットによる検索結果}
+実験に関して想定するユーザは次の通りである．
+\begin{enumerate}
+	\item 知識ベースに関する専門知識を持たない
+	\item ``Arab Spring''について調べる
+\end{enumerate}
+
+\subsubsection{キーワード検索結果}
+キーワード検索の結果，主語のエンティティのドキュメントに``Arab Spring''を含むトリプルを373個，目的語のエンティティのドキュメントに``Arab Spring''を含むトリプルを245個を得た．全トリプルに含まれるプロパティの種類数は68個だった．図~\ref{fig:keywordResult}はその一部の抜粋である．
+%
+\begin{figure}[h]
+\centering
+\includegraphics[width=3.5in]{image/keywordResult.png}
+\caption{\small
+``Arab Spring''のキーワード検索結果
+}
+\label{fig:keywordResult}
+\end{figure}
+%
+\subsubsection{キーワード検索結果に対応するプロパティファセット}
+キーワード検索結果に対応するプロパティファセットは，図~\ref{fig:propertyFacet}の通りである．なお，この結果は図~\ref{fig:hierachicalClusters}で提示したファセットキーのみに絞っている．この結果を踏まえて，ユーザは政治に関するプロパティを選択すると仮定する．
+%
+\begin{figure}[h]
+\centering
+\includegraphics[width=3in]{image/propertyFacet.png}
+\caption{\small
+キーワード検索結果に対応するプロパティファセット
+}
+\label{fig:propertyFacet}
+\end{figure}
+%
+\subsubsection{ファセット検索結果}
+政治に関するプロパティのキーを選択した検索結果は，図~\ref{fig:facetResult}の通りである．主語のエンティティのドキュメントに``Arab Spring''を含むトリプルを10個，目的語のエンティティのドキュメントに``Arab Spring''を含むトリプルを11個得た．``Arab Spring''に関係する国や政党の指導者や思想を記述したトリプルであることがわかる．
+%
+\begin{figure}[h]
+\centering
+\includegraphics[width=3.5in]{image/facetResult.png}
+\caption{\small
+``Arab Spring''のキーワード検索結果に対するファセット検索結果
+}
+\label{fig:facetResult}
+\end{figure}
+%
+
+
