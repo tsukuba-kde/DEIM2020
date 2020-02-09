@@ -1,7 +1,7 @@
 document/
 image/
 slides/
-.aux
-.bbl
-.blg
-.log
+*.aux
+*.bbl
+*.blg
+*.log
