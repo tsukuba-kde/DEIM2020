@@ -1,17 +1,17 @@
 \section{予備実験}
 \label{sec:experiments}
-プロパティ指向のファセット検索システムの機能要素となるプロパティファセットの生成とその結果について目視による初期的な確認を行うことを目的として，次の２種類のプロパティのクラスタリング 結果についての確認を行なった．
+プロパティ指向のファセット検索システムの機能要素となるプロパティに関するファセットの生成とその結果について目視による初期的な確認を行うことを目的として，次の２種類のプロパティのクラスタリング 結果についての確認を行なった．
 \begin{enumerate}
 	\item 上位プロパティによるクラスタリング
 	\item 階層型クラスタリング によるクラスタリング
 \end{enumerate}
-また，想定するユーザ操作に従って，階層型クラスタリング によって生成したプロパティファセットによる検索結果の確認を行った．
+また，プロトタイプシステムを用いて，階層型クラスタリング によって生成したプロパティに関するファセットを用いた検索結果の確認を行った．
 %
 \subsection{クラスタリング }
 \subsubsection{上位プロパティによるクラスタリング }
-知識ベースの語彙の体系に基づいて，プロパティをクラスタリング する．プロパティは，RDFスキーマと呼ばれる語彙を定義する基本的な仕組みによって，そのプロパティの性質が定義されている．その中で，上位プロパティを定義するために使用されるrdfs:subPropertyOfを利用して，各プロパティを上位プロパティでクラスタリング した．
+知識ベースの語彙の体系に基づいて，プロパティをクラスタリング する．プロパティは，RDFスキーマと呼ばれる語彙を定義する基本的な仕組みによって，そのプロパティの性質が定義されている．その中で，上位プロパティを定義するために使用されるrdfs:subPropertyOfというプロパティを利用して，各プロパティを上位プロパティでクラスタリング  した．クラスタの名称は上位プロパティの名称である．
 \subsubsection{階層型クラスタリング によるクラスタリング }
-実際のデータの関係性に基づいて，プロパティをクラスタリング する．トリプル集合から，プロパティ間の主語に関するJaccard係数と目的語に関するJaccard係数の平均値を計算し，群平均法による階層型クラスタリング によって，主語と目的語との関係が類似するプロパティをクラスタとしてまとめた．
+実際のデータの関係性に基づいて，プロパティをクラスタリング する．クラスタリング の手法は群平均法による階層型クラスタリング を用いた．クラスタリング に用いたプロパティの類似度には，プロパティの主語に対するJaccard係数と目的語に対するJaccard係数の平均値を計算し，Jaccard距離に変換した値を用いた．したがって，各クラスタの要素は，主語と目的語の重複度合いが類似するプロパティとなっている．クラスタの分割はデンドログラムを確認し，分割の閾値を0.990として実行した．クラスタの名称は，クラスタの要素数が1つしかない場合は，その要素の名称をそのまま用いた．また，要素数が複数ある場合は，各要素の内容を確認して便宜的に付けた．
 %
 \subsection{実験環境}
 \label{sec:environment}
@@ -19,19 +19,28 @@
 %
 \subsection{データセット}
 \label{sec:datasets}
-本実験では，DBpedia 2016-10\footnote{https://wiki.dbpedia.org/downloads-2016-10}\ のPage Linksのデータセットの約0.4\%を取得し，検索対象のエンティティとした．エンティティの数は449,339個である．そして，同じDBpedia 2016-10のMappingbased Objectsのデータセットから検索対象のエンティティが含まれるトリプルを抽出し，クラスタリング対象のデータセットとした．トリプルに含まれるプロパティの種類数は617個である．
+本実験では，DBpedia 2016-10\footnote{https://wiki.dbpedia.org/downloads-2016-10}\ のInstance Typesにおいて，クラスがUniversity、Company、Scientist、Politician、Astronautであるエンティティを抽出し，それらのエンティティを記述するトリプルをMappingbased Objectsのデータセットから抽出し，データセットとした．データセットの統計情報を図~\ref{fig:datasetStatistics}に示す．
+%
+\begin{figure}[h]
+\centering
+\includegraphics[width=3in]{image/datasetStatistics.png}
+\caption{\small
+実験に用いたデータセットの統計情報
+}
+\label{fig:datasetStatistics}
+\end{figure}
 %
 \subsection{上位プロパティによるクラスタリング 結果}
 \label{sec:upperPropertyClusteringResult}
-上位プロパティを使うと，617個のプロパティのうち，615個のプロパティを41個のクラスタにまとめることができた．2個のプロパティは，上位プロパティが定義されていないため，クラスタから漏れてしまった．図~\ref{fig:upperPropertyClusters}は41個のクラスタから，プロパティ数が10個以上となったクラスタの一覧である．約4割のプロパティが，2つの上位プロパティにまとめられていることがわかる．それらのクラスタには，多様な領域に関するプロパティがメンバーとして含まれていることを確認した．
+上位プロパティを使うと，101個のプロパティを12個のクラスタにまとめられた（図~\ref{fig:upperPropertyClusters}）．結果から，上位プロパティには名前空間の異なるプロパティも定義されていることがわかる．
 
-また，図~\ref{fig:partOfUpperPropertyCluster}は，``hasPart'' クラスタに含まれるプロパティの一覧である．組織，都市，食物など，様々な領域に関するプロパティが含まれていることがわかる．
+また，図~\ref{fig:partOfUpperPropertyCluster}は，最もサイズの大きなクラスタである``sameSettingAs'' に含まれるプロパティの一覧である．``sameSettingAs'' のプロパティは，rdfs:comment（リソースの説明文を記述するプロパティ）によると，``A relation between two entities participating in a same Situation; e.g., 'Our company provides an antivenom service' (the situation is the service, the two entities are the company and the antivenom).'' とあるが，直感的には，``sameSettingAs'' と図~\ref{fig:partOfUpperPropertyCluster}のプロパティの関係性を理解することは難しいと思われる．
 %
 \begin{figure}[h]
 \centering
 \includegraphics[width=3in]{image/upperPropertyClusters.png}
 \caption{\small
-上位プロパティによるクラスタリング 結果の一部（プロパティ数が10以上のクラスタの一覧）
+上位プロパティによるクラスタリング 結果
 }
 \label{fig:upperPropertyClusters}
 \end{figure}
@@ -40,20 +49,20 @@
 \centering
 \includegraphics[scale=0.5]{image/partOfUpperPropertyCluster.png}
 \caption{\small
-``hasPart''クラスタのプロパティ一覧
+``sameSettingAs''に属すプロパティの一覧
 }
 \label{fig:partOfUpperPropertyCluster}
 \end{figure}
 %
 \subsection{階層型クラスタリング によるクラスタリング 結果}
 \label{sec:hierachicalClustersResult}
-階層型クラスタリング では，617個のプロパティを128個のクラスタを生成した．クラスタの生成はデンドログラムを確認し，分割の閾値を0.995として実行した．図~\ref{fig:hierachicalClusters}は，プロパティ数が10個以上となったクラスタの一覧で19個ある．クラスタの名称は，クラスタ内のプロパティの内容を確認して便宜的に付けた．クラスタのサイズは最大でも51となり，上位プロパティによるクラスタリング と比較して，クラスタのサイズの分散は小さくなっていることは明らかである．クラスタ内のプロパティが関係する領域も，クラスタの名称通り，一定の傾向があることを確認した．図~\ref{fig:partOfHierachicalCluster}を具体例として提示する．一定の領域に関係するプロパティの集合となっていることが確認できる．
+階層型クラスタリング では，101個のプロパティについて23個のクラスタを生成した（図~\ref{fig:hierachicalClusters}）．クラスタに含まれる要素を確認すると，一定の領域に関係するエンティティに対して関係付けられるプロパティでまとまっていることが確認できた．図~\ref{fig:partOfHierachicalCluster}は，UniversityクラスタとAcademicsクラスタのプロパティの一覧である．大学という物理的・組織的なエンティティに関係付けられるプロパティと，学者や研究といったエンティティに関係付けられるプロパティに分けることができている．
 %
 \begin{figure}[h]
 \centering
 \includegraphics[width=3in]{image/hierachicalClusters.png}
 \caption{\small
-階層型クラスタリング によるクラスタリング 結果の一部（プロパティ数が10以上のクラスタの一覧）
+階層型クラスタリング によるクラスタリング 結果
 }
 \label{fig:hierachicalClusters}
 \end{figure}
@@ -62,50 +71,36 @@
 \centering
 \includegraphics[scale=0.5]{image/partOfHierachicalCluster.png}
 \caption{\small
-``競走馬に関するプロパティ''クラスタのプロパティ一覧
+``University''クラスタと``Academics''クラスタのプロパティ一覧
 }
 \label{fig:partOfHierachicalCluster}
 \end{figure}
 %
-\subsection{プロパティファセットによる検索結果}
-実験に関して想定するユーザは次の通りである．
-\begin{enumerate}
-	\item 知識ベースに関する専門知識を持たない
-	\item ``Arab Spring''について調べる
-\end{enumerate}
+\subsection{プロパティに関するファセットを用いた検索}
+主語のエンティティに対して，``Ivy League''でキーワード検索を行うと仮定し，検索結果を確認する．
 
 \subsubsection{キーワード検索結果}
-キーワード検索の結果，主語のエンティティのドキュメントに``Arab Spring''を含むトリプルを373個，目的語のエンティティのドキュメントに``Arab Spring''を含むトリプルを245個を得た．全トリプルに含まれるプロパティの種類数は68個だった．図~\ref{fig:keywordResult}はその一部の抜粋である．
-%
-\begin{figure}[h]
-\centering
-\includegraphics[width=3.5in]{image/keywordResult.png}
-\caption{\small
-``Arab Spring''のキーワード検索結果
-}
-\label{fig:keywordResult}
-\end{figure}
-%
-\subsubsection{キーワード検索結果に対応するプロパティファセット}
-キーワード検索結果に対応するプロパティファセットは，図~\ref{fig:propertyFacet}の通りである．なお，この結果は図~\ref{fig:hierachicalClusters}で提示したファセットキーのみに絞っている．この結果を踏まえて，ユーザは政治に関するプロパティを選択すると仮定する．
+キーワード検索の結果，主語のエンティティのドキュメントに``Ivy League''を含むトリプルを359個取得した．内訳は，主語のエンティティの種類数が39個，プロパティの種類数が26個，目的語のエンティティの種類数が137個である．
+
+キーワード検索結果に対応するプロパティに関するファセット（Predicate Type）は，図~\ref{fig:propertyFacet}の赤枠のように生成されている．また，主語のファセット（Subject Type）には2つのクラスが，目的語のファセット（Object Type）には，21個のクラスがファセットキーとして生成されていることを確認した．この結果を踏まえて，ユーザはPredicate TypeからUniversityを選択し，大学に関係するようなエンティティ間の関係性について探索すると仮定する．
 %
 \begin{figure}[h]
 \centering
 \includegraphics[width=3in]{image/propertyFacet.png}
 \caption{\small
-キーワード検索結果に対応するプロパティファセット
+キーワード検索結果の一部と対応するプロパティファセット
 }
 \label{fig:propertyFacet}
 \end{figure}
 %
 \subsubsection{ファセット検索結果}
-政治に関するプロパティのキーを選択した検索結果は，図~\ref{fig:facetResult}の通りである．主語のエンティティのドキュメントに``Arab Spring''を含むトリプルを10個，目的語のエンティティのドキュメントに``Arab Spring''を含むトリプルを11個得た．``Arab Spring''に関係する国や政党の指導者や思想を記述したトリプルであることがわかる．
+Universityを選択した結果，215個のトリプルを取得した．内訳は，主語のエンティティの種類数が30個，プロパティの種類数が10個，目的語のエンティティの種類数が89個である．プロパティは大学に関係するようなプロパティのみになっていることが確認できる（図~\ref{fig:facetResult}）．また，この時，主語のエンティティのクラスは1種類（University）となり，目的語のエンティティのクラスは15種類となっていることを確認した．このようにして，ユーザは，大学に関係するようなプロパティに絞り込んだ上で，Universityのクラスに属す主語のエンティティと他のクラスに属す目的語のエンティティとの関係性を探索することができる．
 %
 \begin{figure}[h]
 \centering
 \includegraphics[width=3.5in]{image/facetResult.png}
 \caption{\small
-``Arab Spring''のキーワード検索結果に対するファセット検索結果
+Predicate Type ``University''のファセット検索結果の一部
 }
 \label{fig:facetResult}
 \end{figure}
