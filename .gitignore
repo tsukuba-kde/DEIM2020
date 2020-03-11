@@ -1,7 +1,3 @@
 document/
 image/
 slides/*.pptx
-*.aux
-*.bbl
-*.blg
-*.log
